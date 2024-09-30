@@ -19,14 +19,17 @@ jobs:
       - name: Install deps
         run: |
           pip install -r requirements.txt
-      - name: Test building bundle
+      - name: Test Building Community Bundle
         run: |
-          # Use the community bundle because it's smaller and faster
           git clone --recurse-submodules https://github.com/adafruit/CircuitPython_Community_Bundle.git
           cd CircuitPython_Community_Bundle
-          echo "print('hello world')" > libraries/helpers/PiperBlocklyLibrary/extrarootfile.py
+          #echo "print('hello world')" > libraries/helpers/PiperBlocklyLibrary/extrarootfile.py
           circuitpython-build-bundles --filename_prefix test-bundle --library_location libraries --library_depth 2
-
+      - name: Test Building Adafruit Bundle
+        run: |
+          git clone --recurse-submodules https://github.com/adafruit/Adafruit_CircuitPython_Bundle.git
+          cd Adafruit_CircuitPython_Bundle
+          circuitpython-build-bundles --filename_prefix test-bundle --library_location libraries --library_depth 2
 
   mock-push-updates:
     runs-on: ubuntu-latest
