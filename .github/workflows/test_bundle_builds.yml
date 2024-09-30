@@ -25,6 +25,7 @@ jobs:
           # Use the community bundle because it's smaller and faster
           git clone --recurse-submodules https://github.com/adafruit/CircuitPython_Community_Bundle.git
           cd CircuitPython_Community_Bundle
+          echo "print('hello world')" > libraries/helpers/displayio_listselect/extrarootfile.py
           circuitpython-build-bundles --filename_prefix test-bundle --library_location libraries --library_depth 2
           BUILD_SUCCESS=true
     outputs:
