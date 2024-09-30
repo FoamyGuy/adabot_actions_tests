@@ -21,22 +21,16 @@ jobs:
           pip install -r requirements.txt
       - name: Test building bundle
         run: |
-          BUILD_SUCCESS=false
           # Use the community bundle because it's smaller and faster
           git clone --recurse-submodules https://github.com/adafruit/CircuitPython_Community_Bundle.git
           cd CircuitPython_Community_Bundle
           echo "print('hello world')" > libraries/helpers/PiperBlocklyLibrary/extrarootfile.py
           circuitpython-build-bundles --filename_prefix test-bundle --library_location libraries --library_depth 2
-          BUILD_SUCCESS=true
-    outputs:
-      build_success: $BUILD_SUCCESS
+
 
   mock-push-updates:
     runs-on: ubuntu-latest
     needs: test-bundle-builds
-
-
-    if: needs.test-bundle-builds.outputs.build_success
     steps:
       - name: Check For Success
         run: echo "The builds were successful!"
