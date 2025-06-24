@@ -39,4 +39,4 @@ jobs:
         env:
           release_created: ${{ needs.release_check.outputs.release_created }}
         run: |
-          echo $release_created
+          echo "$release_created"
