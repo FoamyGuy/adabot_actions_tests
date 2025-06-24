@@ -1,0 +1,42 @@
+name: Daily Release Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release_check:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.check_release.outputs.release_created }}
+    steps:
+    - name: Set up requested Python version
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+    - name: Versions
+      shell: bash
+      run: |
+        python3 --version
+    - name: Checkout Current Repo
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+        show-progress: false
+
+    - name: Create Release If Needed
+      id: check_release
+      env:
+        GITHUB_TOKEN: NOT_REALLY
+      shell: bash
+      run: |
+        python get_val.py make_release
+
+  upload_release_assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up requested Python version
+        shell: bash
+        env:
+          release_created: {{ needs.release_check.outputs.release_created }}
+        run: |
+          echo $release_created
